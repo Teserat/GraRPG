@@ -11,7 +11,7 @@ namespace GraKonsolowaRPG
         public string Nazwa { get; set; }
         public int Cena { get; set; }
         public int ModyfikatorObrazen { get; set; }
-        public bool MozliwoscNoszeniaTarczy
+        public bool MozliwoscNoszeniaTarczy 
         {
             get
             {

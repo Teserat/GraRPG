@@ -10,6 +10,8 @@ namespace GraKonsolowaRPG
     {
         private static Bohater _bohater; // <-- Zmienna złożona , zmienna globalna prywatna(taki zapis _bohater)
         private static List<IBron> _bronie;
+        private static List<Zbroja> _zbroje;
+
         static void Main(string[] args) // <-- Metoda
         {
             StworzBronie();
@@ -19,12 +21,27 @@ namespace GraKonsolowaRPG
         static void StworzBronie()
         {
             _bronie = new List<IBron>(); //deklaracja listy dla obiektu Bron
+            _zbroje = new List<Zbroja>();
+
             Bron bron = new Bron("Kijek rozpaczy", 3, 4);
             _bronie.Add(bron);
             _bronie.Add(new Bron("Miecz Alibaby", 8, 6));
             _bronie.Add(new Bron("Klucz Francuski", 10, 10));
             _bronie.Add(new BronDwureczna("Gigantyczny otwieracz do puszek", 25, 4));
 
+            _zbroje.Add(new Tarcza
+            {
+                Nazwa = "Tarcza Niebios",
+                Obrona = 10,
+                PoziomZuzycia = 0,
+            }
+            );
+
+            Napiersnik napiersnik = new Napiersnik();
+            napiersnik.Nazwa = "Zbroja Wojownika Niebios";
+            napiersnik.Obrona = 15;
+            napiersnik.PoziomZuzycia = 0;
+            _zbroje.Add(napiersnik);
         }
 
         static void ObsługaMenu()
@@ -166,11 +183,40 @@ namespace GraKonsolowaRPG
                 Console.WriteLine(licznik + ". " + bron.Nazwa);
                 licznik++;
             }
+            foreach(Zbroja zbroja in _zbroje)
+            {
+                Console.WriteLine(licznik + ". " + zbroja.Nazwa);
+                licznik++;
+            }
+
             Console.WriteLine("Wybierz bron: ");
             string odczyt = Console.ReadLine();
             int opcja = int.Parse(odczyt);
-            IBron wybranaBron = _bronie[opcja-1];
-            _bohater.KupBron(wybranaBron);
+
+            if (opcja <= _bronie.Count)
+            {
+                IBron wybranaBron = _bronie[opcja - 1];
+                _bohater.KupBron(wybranaBron);
+            }else
+            {
+                opcja -= _bronie.Count;
+                Zbroja wybranaZbroja = _zbroje[opcja - 1];
+                if (_bohater.NoszonaBron != null && (_bohater.NoszonaBron.MozliwoscNoszeniaTarczy == false && wybranaZbroja is Tarcza))
+                {
+                    Console.WriteLine("Nie można kupić tarczy, do broni dwuręcznej");
+                    return;
+                }
+                if (wybranaZbroja is Tarcza) // zapytanie o szczegółowość tarczy
+                {//"is" "as" łączą się razem
+                    _bohater.NoszonaTarcza = wybranaZbroja as Tarcza;
+                }
+                else // przypisanie do klasy Napierśnik, jeśli nie Tarcza
+                {
+                    //_bohater.NoszonyNapiersnik = wybranaZbroja as Napiersnik;
+                    // druga możliwość zapisu rzutowania, działa tak samo 
+                     _bohater.NoszonyNapiersnik = (Napiersnik)wybranaZbroja;
+                }
+            }
 
         }
         static void Czekanie()

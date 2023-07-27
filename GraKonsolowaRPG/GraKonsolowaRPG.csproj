@@ -47,8 +47,11 @@
     <Compile Include="Bron.cs" />
     <Compile Include="BronDwureczna.cs" />
     <Compile Include="IBron.cs" />
+    <Compile Include="Napiersnik.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tarcza.cs" />
+    <Compile Include="Zbroja.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

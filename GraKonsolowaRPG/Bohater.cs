@@ -15,7 +15,10 @@ namespace GraKonsolowaRPG
         public int Level { get; set; }
         public int PunktyDoswiadczenia { get; set; }
         public int Sakwa { get; set; }
-        public IBron NoszonaBron { get; private set; }  // wgląd wszędzie, edycja tylko w ramach metody w tej klasie
+        public IBron NoszonaBron { get; set; }  // wgląd wszędzie, edycja tylko w ramach metody w tej klasie
+        public Napiersnik NoszonyNapiersnik { get; set; }
+        public Tarcza NoszonaTarcza { get; set; }
+
 
         //Konstruktor - tworzy obiekt, nazwa jak klasa
         public Bohater( string imie) // -  żeby stworzyć obiekt, musimy podać imie. A pozostałe parametry się podstawiają
@@ -55,11 +58,32 @@ namespace GraKonsolowaRPG
             {
                 Console.WriteLine(NoszonaBron.Nazwa + " obrażenia " + NoszonaBron.ModyfikatorObrazen);
             }
+            if (NoszonaTarcza != null)
+            {
+                Console.WriteLine(NoszonaTarcza.Nazwa + " obrona " + NoszonaTarcza.Obrona); ;
+            }
+            if (NoszonyNapiersnik != null)
+            {
+                Console.WriteLine(NoszonyNapiersnik.Nazwa + " obrona " + NoszonyNapiersnik.Obrona);
+            }
         }
         public void KupBron(IBron bron)
         {
             if(bron.Cena <= Sakwa)
             {
+                if(NoszonaBron != null && (NoszonaBron.MozliwoscNoszeniaTarczy == false && bron is Tarcza ))
+                {
+                    Console.WriteLine("Nie można kupić tarczy, do broni dwuręcznej");
+                    return;
+                }
+                
+                if( NoszonaTarcza != null && bron is BronDwureczna)
+                {
+                    Console.WriteLine("Nie można kupić miecza dwuręcznego do tarczy");
+                    return;
+                }
+
+
                 Sakwa -= bron.Cena;
                 NoszonaBron = bron;
                 Console.WriteLine("Kupiłeś " + bron.Nazwa);
