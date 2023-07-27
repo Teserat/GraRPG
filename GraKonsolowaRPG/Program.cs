@@ -33,7 +33,6 @@ namespace GraKonsolowaRPG
             Console.WriteLine("1. Nowa gra");
             Console.WriteLine("2. Wczytaj gre");
             Console.WriteLine("3. Zakończ");
-
             string opcja = Console.ReadLine();
 
             if (opcja == "1")
